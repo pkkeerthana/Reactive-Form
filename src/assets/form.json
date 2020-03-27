@@ -1,0 +1,21 @@
+{
+    "attribute_weights":{
+        "action_weights":{
+            "tags":2,
+            "searches":3,
+            "shares":7,
+            "likes":4,
+            "clicks":4,
+            "search_clicked":8
+
+        },
+        "kg_weights":{
+            "tags":2,
+            "searches":3,
+            "shares":7,
+            "likes":4,
+            "clicks":4,
+            "search_clicked":8
+        }
+    }
+}
