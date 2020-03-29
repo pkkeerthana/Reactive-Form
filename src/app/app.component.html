@@ -5,13 +5,26 @@
 </head>
 
 <body>
+
   <div class="outercontainer">
     <div style="padding-top: 20%; background: rgb(70, 70, 117);"></div>
     <div class="container col-md-11 col-sm-11">
       <div style="height:15px;"></div>
+
+      <div class="row innercontainer">
+        <label>Select Language</label>
+        <select class="custom-select" (change)="changeLanguage($event)">
+          <option>Choose your language</option>
+          <option *ngFor="let each of language" [value]=each>{{each}}</option>
+        </select>
+        <label></label>
+        <input type="text" [ngModel]="paragraph|languagePipe:flag" class="form-control">
+      </div>
+
       <div class="innercontainer col-md-12 col-sm-12" style="background:white;">
         <div class="title">KNOWLEDGE GRAPH DETAILS</div>
       </div>
+
       <div class="row innercontainer">
         <div class="col-md-2 col-sm-6">
           <label>Client ID:</label>
@@ -26,43 +39,39 @@
       </div>
 
 
-      <form (ngSubmit)="postClientDetails()">
-        <div class="row innercontainer">
-          <div class="col-md-4 col-sm-12">
-            <h6>Action Weights</h6>
-          </div>
-          <div class="row">
-            <div class="form-group col-sm-12 col-md-3"
-              *ngFor="let each of KGForm.controls.attribute_weights.controls.action_weights.controls | keyvalue">
-              <label for=each.key>{{each.key}}</label>
-              <input type="Number" id="each.key" [value]=each.value.value class="form-control" />
+      <div *ngIf=formready>
+        <form [formGroup]="KGForm" (ngSubmit)="postClientDetails()">
+          <div formGroupName="attribute_weights">
+            <div class="col-md-4 col-sm-12">
+              <h6>Action Weights</h6>
             </div>
-          </div>
-        </div>
-
-        <div class="row innercontainer">
-          <div class="col-md-4 col-sm-12">
-            <h6>KG Weights</h6>
-          </div>
-          <div class="row">
-            <div class="form-group col-sm-12 col-md-3"
-              *ngFor="let each of KGForm.controls.attribute_weights.controls.kg_weights.controls | keyvalue">
-              <label for="">{{each.key}}</label>
-              <input type="Number" id=each.key [value]=each.value.value class="form-control" />
+            <div formGroupName="action_weights" class="row innercontainer">
+              <div class="form-group col-sm-12 col-md-3" *ngFor="let each of KGForm.controls.attribute_weights.controls.action_weights.controls |keyvalue">
+                <label>{{each.key}}</label>
+                <input type="number" [formControlName]="each.key" value={{each.value.value}} class="form-control">
+              </div>
             </div>
+            
+            <div class="col-md-4 col-sm-12">
+              <h6>KG Weights</h6>
+            </div>
+            <div formGroupName="kg_weights" class="row innercontainer">
+              <div class="form-group col-sm-12 col-md-3" *ngFor="let each of KGForm.controls.attribute_weights.controls.kg_weights.controls |keyvalue">
+                <label>{{each.key}}</label>
+                <input type="number" [formControlName]="each.key" value={{each.value.value}} class="form-control">
+              </div>
+            </div>
+            
           </div>
-        </div>
-        <div class="row savebtn">
-          <button type="submit" class="col-md-12 btn btn-primary">Save</button>
-        </div>
-      </form>
-
-
+          <div class="row savebtn">
+            <button type="submit" class="col-md-12 btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
 
       <div style="height:2px;"></div>
+
     </div>
-
-
   </div>
 </body>
 

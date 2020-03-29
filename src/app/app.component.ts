@@ -1,15 +1,18 @@
 import { Component,OnInit ,ViewChild} from '@angular/core';
 import { FormService } from './form.service';
-import {FormGroup, FormControl, FormBuilder,FormGroupDirective} from '@angular/forms';
+import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
- 
+export class AppComponent implements OnInit {
+  paragraph:String='english';
   constructor(private formservice:FormService, private fb:FormBuilder){
+   
   }
+  language=['Malayalam','English','Hindi'];
   title="knowledge graph";
   client_id:string;
   KGForm:FormGroup;
@@ -20,7 +23,11 @@ export class AppComponent {
   Action_values:any;
   Kg_keys:any;
   Kg_values:any;
+  flag:string;
+  formready=0;
+  
   getClientDetails(){
+    
     this.formservice.getdata(this.client_id).subscribe(data=>{    
      
       this.Action_keys= Object.keys(data.attribute_weights.action_weights);
@@ -37,30 +44,27 @@ export class AppComponent {
       this.attribute_weights.addControl('action_weights', new FormGroup(this.action_weights.controls));
       this.attribute_weights.addControl('kg_weights',new FormGroup(this.kg_weights.controls));
       this.KGForm.addControl('attribute_weights',new FormGroup(this.attribute_weights.controls));
-      // for(let i=0;i<this.Action_keys.length;i++){
-      //   this.KGForm['controls'].attribute_weights['controls'].action_weights['controls'].Action_keys[i].patchValue(9);
-      // }
-    console.log(this.KGForm);
+     
+      this.formready=1;
     });
       
   }
   postClientDetails(){
-    console.log("submitted");
-    this.formservice.postdata(this.client_id,this.KGForm);
+    console.log(this.KGForm.value);
   }
 
-
+  changeLanguage(e){
+    console.log(e);
+    this.flag=e.target.value;
+  }
   ngOnInit(){
-    this.kg_weights=this.fb.group({
-    });
-    this.action_weights=this.fb.group({
-    
-    });
+
+    this.kg_weights=this.fb.group({});
+    this.action_weights=this.fb.group({});
     this.attribute_weights=this.fb.group({});
     this.KGForm=this.fb.group({});
     
-
-   
+    
   }
   
 
